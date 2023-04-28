@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import css from './ContactList.module.css';
 
-export const ContactList = ({ onDelete, filterContacts}) => {
+const ContactList = ({ onDelete, filterContacts}) => {
     return (
         <ul className={css.list}>
             {filterContacts().map(contact => (
@@ -25,3 +25,5 @@ ContactList.propTypes = {
     onDelete: PropTypes.func.isRequired,
     filterContacts: PropTypes.func.isRequired,
 };
+
+export default ContactList;
