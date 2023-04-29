@@ -23,7 +23,6 @@ const App = () => {
       return JSON.parse(storage);
     }
   });
-
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
@@ -32,14 +31,13 @@ const App = () => {
     localStorage.setItem('contacts', storage);
   }, [contacts]);
 
-
   const handleSubmit = event => {
     event.preventDefault();
     const form = event.currentTarget;
     const name = form.elements.name.value;
     const number = form.elements.number.value;
-    const newContact = {id: nanoid(), name: name, number: number};
-          
+    const newContact = { id: nanoid(6), name: name, number: number };
+
     if (contacts.find(contact => contact.name.toLowerCase() === name.toLowerCase(),)) {
       Notiflix.Notify.warning(`${name} is already in contacts.`,{
         position: 'center-top',
@@ -60,23 +58,9 @@ const App = () => {
     }
   };
 
-    
   const filterChange = event => {
     setFilter(event.target.value);
   };
-  
-  const deleteContact = contactID => {
-    const index = contacts.findIndex(contact => 
-      contact.id === contactID);
-      for ( const el of contacts) {
-        if (contacts.indexOf(el) !== index) {
-            setContacts(contacts.filter((contacts, i) => i !== index));
-          } else {
-            setContacts([]);
-          }
-        }
-      };
-
 
   const filterContacts = () => {
     const newArray = contacts.filter(contact => {
@@ -86,18 +70,21 @@ const App = () => {
     return newArray;
   };
 
+  const deleteContact = contactID => {
+    const newList = contacts.filter(contact => contact.id !== contactID);
+    setContacts(newList);
+  };
 
     return (
       <div className={css.container}>
         <h1 className={css.header}>Phonebook</h1>
-        <ContactForm onSubmit={handleSubmit} />
+        <ContactForm handleSubmit={handleSubmit} />
         <h2 className={css.secondHeader}>Contacts</h2>
-        <Filter filter={filter} onChange={filterChange} />
+        <Filter filter={filter} handleChange={filterChange} />
         <ContactList filterContacts={filterContacts} onDelete={deleteContact}/>
       </div>
     );
 };
-
 
 export default App;
 
